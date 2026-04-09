@@ -3,10 +3,10 @@ import sys
 
 #создавание
 pygame.init()
-weight = 1000
-height = 1000
+weight = 1024
+height = 768
 okno = pygame.display.set_mode((weight , height))
-pygame.display.set_caption("экран")
+pygame.display.set_caption("Tregubenko Vladimir")
 
 #цвета
 BLUEGREEN = (30, 147, 123)
@@ -21,7 +21,7 @@ while console:
     for event in pygame.event.get():       #pygame.event.get() = события, которые мы не успели рассмотреть
         if pygame.QUIT == event.type:
             console = False
-    okno.fill(ORANGE)
+    okno.fill(TURQUOISE)
     pygame.display.flip()
     pygame.time.Clock().tick(100)
 pygame.quit()
