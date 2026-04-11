@@ -25,6 +25,7 @@ def protect_file(filename , size = None):
     try:
         script = os.path.dirname(os.path.abspath(__file__))
         imagepath = os.path.join(script , filename)
+        print(imagepath)
         image = pygame.image.load(imagepath)
         if size:
             image = pygame.transform.scale(image , size)
@@ -33,7 +34,36 @@ def protect_file(filename , size = None):
     except pygame.error as e:
         print(f"Неудалось загрузить изображение {filename}: {e}")
         return None
-person = protect_file("1121.jpg")
+
+def music_file(filename):
+    try:
+        script = os.path.dirname(os.path.abspath(__file__))
+        soundpath = os.path.join(script , filename)
+        pygame.mixer.music.load(soundpath)
+        pygame.mixer.music.play(-1)
+        return True
+    except pygame.error as e:
+        print(e)
+        return False
+
+def loading(filename):
+    try:
+        script = os.path.dirname(os.path.abspath(__file__))
+        loadpath = os.path.join(script , filename)
+        sound = pygame.mixer.Sound(loadpath)
+        return sound
+    except pygame.error as e:
+        print(e)
+        return None
+
+person = protect_file("ninja_warrior.png" , (512 , 512))
+music = music_file("Plants_vs._Zombies_OST_-_Roof_Theme_(SkySound.cc).mp3")
+load_music = loading("28 Days Later Main Theme (From 28 Days Later).mp3")
+
+if load_music:
+    load_music.set_volume(0.7)
+pygame.mixer.music.set_volume(0.4)
+
 
 console = True
 clock = pygame.time.Clock().tick(120)
@@ -43,6 +73,8 @@ while console:
         if pygame.QUIT == event.type:
             console = False
     okno.fill(GREEN)
+    if person:
+        okno.blit(person , (128 , 128))
     pygame.display.flip()
 
 
