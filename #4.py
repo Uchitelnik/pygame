@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 
+from pygame.examples.go_over_there import screen
 from pygame.examples.sprite_texture import renderer
 
 pygame.init()
@@ -102,13 +103,13 @@ while console:
             console = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                cord_person[1] -= 10
+                cord_person[1] -= 50
             elif event.key == pygame.K_s:
-                cord_person[1] += 10
+                cord_person[1] += 50
             elif event.key == pygame.K_a:
-                cord_person[0] -= 10
+                cord_person[0] -= 50
             elif event.key == pygame.K_d:
-                cord_person[0] += 10
+                cord_person[0] += 50
             elif event.key == pygame.K_e:
                 if scale_person == 1.0:
                     scale_person = 0.5
@@ -119,15 +120,25 @@ while console:
                     pygame.mixer.music.pause()
                 else:
                     pygame.mixer.music.unpause()
-    if cord_person[0] >= weight - 100:
-    if cord_person[1] >= height - 100:
+    # if cord_person[0] < 0 + 20:
+    #     cord_person = [512, 384]
+    # elif cord_person[0] > weight - 20:
+    #     cord_person = [512, 384]
+    # if cord_person[1] < 0:
+    #     cord_person = [512, 384]
+    # elif cord_person[1] > height:
+    #     cord_person = [512, 384]
+    cord_person[1] = max(0, min(cord_person[1], height - 64))
+    cord_person[0] = max(0, min(cord_person[0], weight - 64))
 
     if phon:
         okno.blit(phon , (0 , 0))
     if person:
-        okno.blit(person , (128 , 300))
+        scale = pygame.transform.scale(person, (64, 64))
     if enemy:
         okno.blit(enemy , (600 , 165))
+    cord = scale.get_rect(center=cord_person)
+    okno.blit(scale, cord)
     pygame.display.flip()
 
 
