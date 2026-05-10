@@ -58,3 +58,34 @@ class Ball:
         self.y += self.vy * dt
         self.ax = 0
         self.ay = 0
+        self.trail.append((int(self.x) , int(self.y)))
+        if len(self.trail) >= self.trail_len:
+            self.trail.pop(0)
+        self.check_adg()
+
+    def check_adg(self): #функция для проверки столкновение с границей
+        if self.y + self.radius > height:
+            self.y = height - self.radius
+            self.vy = -self.vy * DAMPING
+            self.vx *= FRIKTION
+        if self.y - self.radius < 0:
+            self.y = self.radius
+            self.vy = -self.vy * DAMPING
+        if self.x + self.radius > width:
+            self.x = width - self.radius
+            self.vx = -self.vx * DAMPING
+        if self.x - self.radius < 0:
+            self.x = self.radius
+            self.vx = -self.vx * DAMPING
+
+    def trail_draw(self , surface):
+        for i ,pos in enumerate(self.trail):
+            alpha = int(255 * (i / len(self.trail))) if self.trail else 255
+            color = (*self.color, alpha)
+            pygame.draw.circle(surface , self.color , pos , max(1 , self.radius // 4))
+        pygame.draw.circle(surface , self.color , (int(self.x) , int(self.y)) , self.radius)
+        pygame.draw.circle(surface , BLACK , (int(self.x) , int(self.y)) , self.radius , 6)
+        if abs(self.vx) > 1 or abs(self.vy) > 1:
+            end_x = self.x + self.vx * 0.1
+            end_y = self.y + self.vy * 0.1
+            pygame.draw.line(surface , GREEN , (self.x , self.y) , (end_x , end_y) ,5)
