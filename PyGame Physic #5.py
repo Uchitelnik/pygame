@@ -136,10 +136,32 @@ class Physic_Sim:
         ball3 = Ball(30, 300, 50, RED)
         self.balls.append(ball3)
 
-    def add_balls(self , x , y):
-        radius = random.randint(20 , 80)
-        color = random.choice([WHITE , ORANGE , TURQUOISE , RED , BLACK , DARKBLUE , BLUE , PURPLE , WHITEGREEN , GREEN])
-        ball = Ball(x , y ,radius , color)
-        ball.vx = random.randint(-300 , 300)
-        ball.vy = random.randint(-200 , 300)
+    def add_balls(self, x, y):
+        radius = random.randint(20, 80)
+        color = random.choice([WHITE, ORANGE, TURQUOISE, RED, BLACK, DARKBLUE, BLUE, PURPLE, WHITEGREEN, GREEN])
+        ball = Ball(x, y, radius, color)
+        ball.vx = random.randint(-300, 300)
+        ball.vy = random.randint(-200, 300)
         self.balls.append(ball)
+
+    def create_particales(self, x, y):
+        for i in range(100):
+            angle = random.uniform(0, 2 * math.pi)
+            speed = random.uniform(40, 180)
+            vx = math.cos(angle) * speed
+            vy = math.sin(angle) * speed
+            color = random.choice([WHITE, ORANGE, TURQUOISE, RED, BLACK, DARKBLUE, BLUE, PURPLE, WHITEGREEN, GREEN])
+            self.particales.append(Particle(x, y, vx, vy, color))
+
+    def update(self, dt):
+        if self.paused:
+            return
+        for i in self.balls:
+            if self.gravity_enabled:
+                i.apply_force(0, GRAVITY * i.mass)
+            i.update(dt)
+        self.ball_collision()
+        self.particales = [j for j in self.particales if j.is_alive()]
+        for g in self.particales:
+            g.update(dt)
+    def ball_collision(self):
