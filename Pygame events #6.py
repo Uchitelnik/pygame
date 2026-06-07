@@ -1,8 +1,4 @@
-from tty import ISPEED
-
 import pygame
-import sys
-import random
 
 pygame.init()
 width = 1024
@@ -57,4 +53,23 @@ class Keybutton:
         self.color_on = RED
         self.is_clicked = False
         self.is_hovered = False
-        self.font = pygame.font.Font("Monospace" , 10)
+        self.font = pygame.font.Font("Monospace", 10)
+
+    def tneve(self, event):
+        if event.type == pygame.MOUSEMOTION:
+            self.is_hovered = self.rect.collidepoint(event.pos)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.is_clicked = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.is_clicked = False
+        return False
+
+    def draw(self, surface):
+        color = DARKBLUE
+        if self.is_clicked:
+            color = PURPLE
+        pygame.draw.rect(surface, color, self.rect)
+        text = self.font.render(self.text, True, BLACK)
+        text_form = text.get_rect(center=self.rect.center)
+        surface.blit(text, text_form)
