@@ -1,0 +1,6 @@
+chislo = int(input())
+palindrom = input()
+pr = ("четное" if chislo % 2 == 0 else "нечетное")
+print(pr)
+qq = ("палиндром" if palindrom == palindrom[::-1] else "не палиндром")
+print(qq)
