@@ -73,3 +73,13 @@ class Keybutton:
         text = self.font.render(self.text, True, BLACK)
         text_form = text.get_rect(center=self.rect.center)
         surface.blit(text, text_form)
+
+
+class Text:
+    def __init__(self, x, y, height, width):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = ""
+        self.active = False
+        self.font = pygame.font.Font("Bold Gothic" , 10)
+        self.crosvis = True
+        self.crosblink = 0
