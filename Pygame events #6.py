@@ -17,6 +17,7 @@ BLUE = (0, 0, 255)
 PURPLE = (106, 90, 205)
 WHITEGREEN = (0, 255, 0)
 GREEN = (60, 179, 113)
+GRAY = (182, 182, 182)
 
 
 class Ball:
@@ -80,6 +81,28 @@ class Text:
         self.rect = pygame.Rect(x, y, width, height)
         self.text = ""
         self.active = False
-        self.font = pygame.font.Font("Bold Gothic" , 10)
+        self.font = pygame.font.Font("Bold Gothic", 10)
         self.crosvis = True
         self.crosblink = 0
+
+    def ob_events(self, event):
+        if pygame.MOUSEBUTTONDOWN == event.type:
+            self.active = self.rect.collidepoint(event.pos)
+        elif pygame.KEYDOWN == event.type and self.active:
+            if pygame.K_RETURN == event.key:
+                return self.text
+            elif pygame.K_BACKSPACE == event.key:
+                self.text = self.text[:-1]
+            else:
+                self.text += event.unicode
+        return None
+
+    def draw_text(self, surface):
+        color = GRAY if self.active else WHITE
+        pygame.draw.rect(surface, color, self.rect)
+        pygame.draw.rect(surface, BLACK, self.rect, 6)
+        text_renderer = self.font.render(self.text, True, BLACK)
+        surface.blit(text_renderer, (self.rect.x + 5, self.rect.y + 5))
+        if self.active and self.crosvis:
+            crosshair_x = self.rect.x + 5 + text_renderer.get_width()
+            pygame.draw.line(surface, WHITE, (crosshair_x, self.rect.y + 5), (crosshair_x, self.rect.y - 5 + self.rect.height) , 3 )
